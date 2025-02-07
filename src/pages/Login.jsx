@@ -2,11 +2,14 @@ import { useState } from "react";
 import loginIcon from "../assets/auth_icon.png";
 import { IoEyeSharp } from "react-icons/io5";
 import { FaEyeSlash } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { loginRequest } from "../common/auth";
+import { toast } from "react-toastify";
 
 export default function Login() {
 
-  const [ showPassword, setShowPassword ] = useState(false);  
+  const [ showPassword, setShowPassword ] = useState(false); 
+  const navigate = useNavigate(); 
 
   const [ formData, setFormData ] = useState({
     email: "",
@@ -26,8 +29,18 @@ export default function Login() {
 
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const res = await loginRequest(formData);
+    console.log(res)
+   
+    if(res.success === true) {
+      toast(res.message);
+      navigate("/");
+    } else {
+      toast.error(res.message);
+    }
+
   } 
 
   return (
