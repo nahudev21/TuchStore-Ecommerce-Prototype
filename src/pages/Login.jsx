@@ -8,6 +8,28 @@ export default function Login() {
 
   const [ showPassword, setShowPassword ] = useState(false);  
 
+  const [ formData, setFormData ] = useState({
+    email: "",
+    password: ""
+  }) 
+
+  const handleChange = (e) => {
+
+    const { name, value } = e.target;
+
+    setFormData((prev) => {
+      return {
+        ...prev,
+        [name]: value
+      }
+    });
+
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  } 
+
   return (
     <section id="login">
       <div className="mx-auto container p-4">
@@ -16,14 +38,18 @@ export default function Login() {
             <img src={loginIcon} alt="Login icon" />
           </div>
 
-          <form className="">
+          <form className="" onSubmit={handleSubmit}>
             <div className="">
               <label>Usuario</label>
               <div className="bg-slate-100 p-2">
                 <input
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   type="email"
                   placeholder="Usuario"
                   className="w-full h-full outline-none bg-transparent"
+                  required
                 />
               </div>
             </div>
@@ -31,9 +57,13 @@ export default function Login() {
               <label>Contraseña</label>
               <div className="bg-slate-100 p-2 flex">
                 <input
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
                   type={showPassword ? "text" : "password"}
                   placeholder="Contraseña"
                   className="w-full h-full outline-none bg-transparent"
+                  required
                 />
                 <div
                   className="cursor-pointer text-xl"
@@ -57,7 +87,7 @@ export default function Login() {
             </button>
           </form>
           <p className="my-2">
-            Todavia no tienes una cuenta?{" "}
+            Todavía no tienes una cuenta?{" "}
             <Link
               to="/sign-up"
               className="text-[#4189e6d2] hover:text-[#4189e6]"
