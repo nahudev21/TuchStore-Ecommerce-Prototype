@@ -2,10 +2,11 @@ import Logo from './Logo'
 import { GoSearch } from "react-icons/go";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { FaShoppingCart } from "react-icons/fa";
+import { Link } from 'react-router-dom';
 
 export default function Header() {
   return (
-    <header className="h-16 shadow-md">
+    <header className="h-16 shadow-md bg-white">
       <div className="container h-full mx-auto flex items-center justify-between px-4">
         <div className="">
           <Logo w={100} h={64} />
@@ -37,9 +38,11 @@ export default function Header() {
           </div>
 
           <div className="p-2">
-            <button className="px-3 py-[2px] rounded-[15px] text-white bg-[#eb611f] hover:bg-[#ff5100]">
-              Iniciar Sesión
-            </button>
+            <Link to="/login">
+              <button className="px-3 py-[2px] rounded-[15px] text-white bg-[#eb611f] hover:bg-[#ff5100]">
+                Iniciar Sesión
+              </button>
+            </Link>
           </div>
         </div>
       </div>
