@@ -1,4 +1,3 @@
-import Logo from './Logo'
 import { GoSearch } from "react-icons/go";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { FaShoppingCart } from "react-icons/fa";
@@ -8,9 +7,12 @@ export default function Header() {
   return (
     <header className="h-16 shadow-md bg-white">
       <div className="container h-full mx-auto flex items-center justify-between px-4">
-        <div className="">
-          <Logo w={100} h={64} />
-        </div>
+        <Link to="/">
+          <div className="flex items-center justify-center">
+            <span className="text-2xl text-black font-bold">Tuch</span>
+            <span className="text-2xl text-[#ff5100] font-bold">Store</span>
+          </div>
+        </Link>
 
         <div className="hidden lg:flex items-center w-full justify-between max-w-sm border rounded-full focus-within:shadow pl-2">
           <input
@@ -39,7 +41,7 @@ export default function Header() {
 
           <div className="p-2">
             <Link to="/login">
-              <button className="px-3 py-[2px] rounded-[15px] text-white bg-[#eb611f] hover:bg-[#ff5100]">
+              <button className="px-3 py-[2px] rounded-[15px] text-white bg-[#eb611f] hover:bg-[#ff5100] hover:scale-[102%]            transition-all">
                 Iniciar Sesión
               </button>
             </Link>
