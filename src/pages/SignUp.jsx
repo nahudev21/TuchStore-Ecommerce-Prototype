@@ -2,12 +2,15 @@ import { useState } from "react";
 import loginIcon from "../assets/auth_icon.png";
 import { IoEyeSharp } from "react-icons/io5";
 import { FaEyeSlash } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { registerRequest } from "../common/auth";
+import { toast } from "react-toastify";
 
 export default function SignUp() {
   
     const [ showPassword, setShowPassword ] = useState(false);  
     const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
+    const navigate = useNavigate();
   
     const [ formData, setFormData ] = useState({
       name: "",
@@ -30,8 +33,15 @@ export default function SignUp() {
   
     };
   
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
       e.preventDefault();
+      if(formData.password === formData.confirmPassword) {
+        const res = await registerRequest(formData);
+        toast.success("Usuario creado con exito!");
+        navigate("/login");
+      } else {
+        toast("Las contraseñas no son iguales!");
+      }
     } 
   
     return (
