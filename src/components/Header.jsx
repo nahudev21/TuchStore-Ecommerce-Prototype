@@ -6,8 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { logoutRequest } from "../common/auth";
 import { toast } from "react-toastify";
 import { logout } from "../store/slices/userSlice";
+import { useState } from "react";
 
 export default function Header() {
+
+  const [ menuDisplay, setMenuDisplay ] = useState(false);
 
   const dispatch = useDispatch();
   const { user, token } = useSelector((state) => state.user);
@@ -45,13 +48,35 @@ export default function Header() {
         </div>
 
         <div className="flex items-center gap-4">
-          <div className="text-2xl cursor-pointer">
-            {user ? (
-              <span className="text-black font-bold text-[14px]">
-                Bienvenido {user.firstName}
-              </span>
-            ) : (
-              <FaRegCircleUser />
+          <div className="relative flex justify-center">
+            <div
+              className="text-2xl cursor-pointer"
+              onClick={() => {
+                setMenuDisplay((prev) => !prev);
+              }}
+            >
+              {user ? (
+                <span className="text-black font-bold text-[14px]">
+                  Bienvenido {user.firstName}
+                </span>
+              ) : (
+                <FaRegCircleUser />
+              )}
+            </div>
+            {menuDisplay && (
+              <div className="absolute bg-white font-bold text-[14px] top-10 bottom-0 h-fit p-2 shadow-lg rounded-sm">
+                <nav>
+                  <Link
+                    to="/admin-panel"
+                    className="whitespace-nowrap hover:text-[#eb611f] hidden md:block p-1 rounded-sm"
+                    onClick={() => {
+                      setMenuDisplay((prev) => !prev);
+                    }}
+                  >
+                    Mi Cuenta
+                  </Link>
+                </nav>
+              </div>
             )}
           </div>
 
@@ -66,15 +91,18 @@ export default function Header() {
 
           <div className="p-2">
             {token ? (
-              <button 
-                onClick={handleLogout} 
-                className="px-3 py-[2px] rounded-[15px] text-[15px] text-white bg-[#eb611f] hover:bg-[#ff5100] hover:scale-[102%] transition-all">
+              <button
+                onClick={handleLogout}
+                className="px-3 py-[2px] rounded-[15px] text-[15px] text-white bg-[#eb611f] hover:bg-[#ff5100] hover:scale-[102%] transition-all"
+              >
                 Cerrar sesión
               </button>
             ) : (
               <Link to="/login">
-                <button className="px-3 py-[2px] rounded-[15px] text-[15px] text-white bg-[#eb611f] hover:bg-[#ff5100] 
-                  hover:scale-[102%] transition-all">
+                <button
+                  className="px-3 py-[2px] rounded-[15px] text-[15px] text-white bg-[#eb611f] hover:bg-[#ff5100] 
+                  hover:scale-[102%] transition-all"
+                >
                   Iniciar Sesión
                 </button>
               </Link>
