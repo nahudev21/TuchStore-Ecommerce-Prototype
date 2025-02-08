@@ -93,3 +93,20 @@ export const logoutRequest = async (token) => {
     return { message: "Error de red o de conexión" };
   }
 }
+
+export const getUserDetailsRequest = async (id) => {
+  try {
+    const response = await fetch(`${API_URL}/users/${id}/user`, {
+      method: "GET",
+      headers: { "Content-type": "Application/json" }
+    });
+    if(response.ok) {
+      const json = await response.json();
+      console.log(json.data)
+      return { success: true, data: json.data }
+    }
+  } catch (error) {
+    console.log("Error de red o de conexión:", error);
+    return { message: "Error de red o de conexión" };
+  }
+}

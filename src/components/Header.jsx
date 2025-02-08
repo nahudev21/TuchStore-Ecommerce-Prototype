@@ -2,8 +2,27 @@ import { GoSearch } from "react-icons/go";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { FaShoppingCart } from "react-icons/fa";
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import { logoutRequest } from "../common/auth";
+import { toast } from "react-toastify";
+import { logout } from "../store/slices/userSlice";
 
 export default function Header() {
+
+  const dispatch = useDispatch();
+  const { user, token } = useSelector((state) => state.user);
+
+  const handleLogout = async () => {
+    const res = await logoutRequest(token);
+
+    if(res.success === true) {
+      toast(res.message);
+      dispatch(logout());
+    } else {
+      toast(res.message)
+    }
+  }
+
   return (
     <header className="h-16 shadow-md bg-white">
       <div className="container h-full mx-auto flex items-center justify-between px-4">
@@ -27,7 +46,13 @@ export default function Header() {
 
         <div className="flex items-center gap-4">
           <div className="text-2xl cursor-pointer">
-            <FaRegCircleUser />
+            {user ? (
+              <span className="text-black font-bold text-[14px]">
+                Bienvenido {user.firstName}
+              </span>
+            ) : (
+              <FaRegCircleUser />
+            )}
           </div>
 
           <div className="text-2xl cursor-pointer relative">
@@ -40,11 +65,20 @@ export default function Header() {
           </div>
 
           <div className="p-2">
-            <Link to="/login">
-              <button className="px-3 py-[2px] rounded-[15px] text-white bg-[#eb611f] hover:bg-[#ff5100] hover:scale-[102%]            transition-all">
-                Iniciar Sesión
+            {token ? (
+              <button 
+                onClick={handleLogout} 
+                className="px-3 py-[2px] rounded-[15px] text-[15px] text-white bg-[#eb611f] hover:bg-[#ff5100] hover:scale-[102%] transition-all">
+                Cerrar sesión
               </button>
-            </Link>
+            ) : (
+              <Link to="/login">
+                <button className="px-3 py-[2px] rounded-[15px] text-[15px] text-white bg-[#eb611f] hover:bg-[#ff5100] 
+                  hover:scale-[102%] transition-all">
+                  Iniciar Sesión
+                </button>
+              </Link>
+            )}
           </div>
         </div>
       </div>

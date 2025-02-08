@@ -5,11 +5,16 @@ import { FaEyeSlash } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { loginRequest } from "../common/auth";
 import { toast } from "react-toastify";
+import { getUserDetailsRequest } from "../common/auth";
+import { useDispatch } from "react-redux";
+import { setToken, setUserDetails } from "../store/slices/userSlice";
 
 export default function Login() {
 
   const [ showPassword, setShowPassword ] = useState(false); 
   const navigate = useNavigate(); 
+
+  const dispatch = useDispatch();
 
   const [ formData, setFormData ] = useState({
     email: "",
@@ -32,11 +37,14 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const res = await loginRequest(formData);
+    dispatch(setToken(res.data.token));
     console.log(res)
    
     if(res.success === true) {
       toast(res.message);
       navigate("/");
+      const userDetails = await getUserDetailsRequest(res.data.id);
+      dispatch(setUserDetails(userDetails.data));
     } else {
       toast.error(res.message);
     }
