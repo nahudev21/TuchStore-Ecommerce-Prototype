@@ -1,0 +1,11 @@
+.userTable {
+    @apply bg-white
+}
+
+.userTable th {
+    @apply border text-[15px] font-medium w-[80px] py-1
+}
+
+.userTable td {
+    @apply border text-[15px] text-center w-[80px] py-1
+}
