@@ -3,10 +3,11 @@ import { FaRegCircleUser } from "react-icons/fa6";
 import { FaShoppingCart } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import { logoutRequest } from "../common/auth";
+import { logoutRequest } from "../api/auth";
 import { toast } from "react-toastify";
 import { logout } from "../store/slices/userSlice";
 import { useState } from "react";
+import Role from "../common/Rol";
 
 export default function Header() {
 
@@ -14,6 +15,7 @@ export default function Header() {
 
   const dispatch = useDispatch();
   const { user, token } = useSelector((state) => state.user);
+  const isAdmin = user?.roles?.some((role) => role.name === Role.ADMIN);
 
   const handleLogout = async () => {
     const res = await logoutRequest(token);
@@ -49,43 +51,47 @@ export default function Header() {
 
         <div className="flex items-center gap-4">
           <div className="relative flex justify-center">
-            <div
-              className="text-2xl cursor-pointer"
-              onClick={() => {
-                setMenuDisplay((prev) => !prev);
-              }}
-            >
-              {user ? (
-                <span className="text-black font-bold text-[14px]">
-                  Bienvenido {user.firstName}
-                </span>
-              ) : (
-                <FaRegCircleUser />
-              )}
-            </div>
+            {user?.id && (
+              <div
+                className="text-2xl cursor-pointer"
+                onClick={() => {
+                  setMenuDisplay((prev) => !prev);
+                }}
+              >
+                {user ? (
+                  <span className="text-black font-bold text-[14px]">
+                    Bienvenido {user.firstName}
+                  </span>
+                ) : (
+                  <FaRegCircleUser />
+                )}
+              </div>
+            )}
             {menuDisplay && (
               <div className="absolute bg-white font-bold text-[14px] top-10 bottom-0 h-fit p-2 shadow-lg rounded-sm">
                 <nav>
-                  <Link
-                    to="/admin-panel"
-                    className="whitespace-nowrap hover:text-[#eb611f] hidden md:block p-1 rounded-sm"
-                    onClick={() => {
-                      setMenuDisplay((prev) => !prev);
-                    }}
-                  >
-                    Mi Cuenta
-                  </Link>
+                  {isAdmin && (
+                    <Link
+                      to="/admin-panel"
+                      className="whitespace-nowrap hover:text-[#eb611f] hidden md:block p-1 rounded-sm"
+                      onClick={() => {
+                        setMenuDisplay((prev) => !prev);
+                      }}
+                    >
+                      Mi Cuenta
+                    </Link>
+                  )}
                 </nav>
               </div>
             )}
           </div>
 
-          <div className="text-2xl cursor-pointer relative">
+          <div className="text-[23px] cursor-pointer relative">
             <span>
               <FaShoppingCart />
             </span>
-            <div className="bg-[#ff5100] text-white w-5 h-5 p-1 flex items-center justify-center rounded-full absolute -top-2 -right-2">
-              <p className="text-sm">0</p>
+            <div className="bg-[#ff5100] text-white w-4 h-4 p-1 flex items-center justify-center rounded-full absolute -top-1 -right-1">
+              <p className="text-[12px]">0</p>
             </div>
           </div>
 

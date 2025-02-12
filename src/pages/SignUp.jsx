@@ -3,7 +3,7 @@ import loginIcon from "../assets/auth_icon.png";
 import { IoEyeSharp } from "react-icons/io5";
 import { FaEyeSlash } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
-import { registerRequest } from "../common/auth";
+import { registerRequest } from "../api/auth";
 import { toast } from "react-toastify";
 
 export default function SignUp() {
