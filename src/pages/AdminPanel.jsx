@@ -25,7 +25,7 @@ export default function AdminPanel() {
         <div className="w-full h-32 flex items-center justify-center flex-col">
           <img src={iconProfile} className="w-[70px] h-[70px] rounded-full" />
           <p className="font-semibold capitalize text-[15px]">
-            {user.firstName} {user.lastName}
+            {user?.firstName} {user?.lastName}
           </p>
         </div>
         {/*navegación*/}
