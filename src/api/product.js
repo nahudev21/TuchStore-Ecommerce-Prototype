@@ -1,3 +1,4 @@
+import { data } from "autoprefixer";
 import { API_URL } from "../api/config";
 
 export const createProductRequest = async (product) => {
@@ -35,6 +36,44 @@ export const createProductRequest = async (product) => {
     return { message: "Error de red o de conexión" };
   }
 };
+
+
+export const editProductRequest = async (product, id) => {
+  const productMapper = {
+    name: product.name,
+    brand: product.brand,
+    price: product.price,
+    inventory: product.inventory,
+    status: product.status,
+    description: product.description,
+    category: product.category,
+  };
+
+  try {
+    const response = await fetch(`${API_URL}/products/product/${id}/update`, {
+      method: "PUT",
+      headers: { "Content-type": "Application/json" },
+      body: JSON.stringify(productMapper),
+    });
+    if (response.ok) {
+      const json = await response.json();
+      console.log(json);
+      return {
+        success: true,
+        data: json.data,
+        message: "Producto actualizado con éxito!",
+      };
+    } else {
+      if (response.status === 401) {
+        return { success: false, message: "Token incorrecto!" };
+      }
+    }
+  } catch (error) {
+    console.log("Error de red o de conexión:", error);
+    return { message: "Error de red o de conexión" };
+  }
+};
+
 
 export const uploadProductImagesRequest = async (productId, files) => {
   let formData = new FormData();
@@ -80,10 +119,13 @@ export const getProductByIdRequest = async (id) => {
 
       const imagesResuls = await Promise.all(images);
 
-      return productMapped(product, imagesResuls);
+      const modifiedProduct = productMapped(product, imagesResuls);
+
+      return { success: true, data: modifiedProduct, message: "Producto obtenido con éxito!" }
     }
   } catch (error) {
-    console.log(error);
+    console.log("Error de red o de conexión:", error);
+    return { message: "Error de red o de conexión" };
   }
 };
 
@@ -115,11 +157,12 @@ export const getAllProductsRequest = async () => {
           return listProductsMapped(product, images); // Devuelve el producto modificado
         })
       );
-
-      return modifiedProducts; // Retorna el array de productos con las modificaciones
+      
+      return { success: true, data: modifiedProducts, message: "Productos obtenidos con éxito!" } // Retorna el array de productos con las modificaciones
     }
   } catch (error) {
-    console.log(error);
+    console.log("Error de red o de conexión:", error);
+    return { message: "Error de red o de conexión" };
   }
 };
 
@@ -166,7 +209,7 @@ const productMapped = (product, imgs) => {
     name: product.data.name,
     description: product.data.description,
     price: product.data.price,
-    stock: product.data.inventory,
+    inventory: product.data.inventory,
     status: product.status,
     brand: product.data.brand,
     category: product.category.name,
@@ -180,7 +223,7 @@ const listProductsMapped = (product, imgs) => {
     name: product.name,
     description: product.description,
     price: product.price,
-    stock: product.inventory,
+    inventory: product.inventory,
     status: product.status,
     brand: product.brand,
     category: product.category.name,
