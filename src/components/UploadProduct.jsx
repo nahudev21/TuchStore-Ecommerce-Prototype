@@ -3,8 +3,10 @@ import { IoMdClose } from "react-icons/io";
 import productCategory from "../helpers/productCategory";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { imageToBase64 } from "../helpers/imageToBase64";
-import { createProductRequest } from "../api/product";
+import { createProductRequest, uploadProductImagesRequest } from "../api/product";
 import { toast } from "react-toastify";
+import DisplayImage from "./DisplayImage";
+import { MdDeleteForever } from "react-icons/md";
 
 export default function UploadProduct({ onClose }) {
 
@@ -22,6 +24,9 @@ export default function UploadProduct({ onClose }) {
   const [ files, setFiles ] = useState({
     files: []
   });
+
+  const [ openFullScreenImage, setOpenFullScreenImage ] = useState(false);
+  const [ fullScreenImage, setFullScreenImage ] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -61,15 +66,37 @@ export default function UploadProduct({ onClose }) {
 
     const res = await createProductRequest(formData);
     if(res.success) {
-        toast.success(res.message);
-        onClose();
+      const resImage = await uploadProductImagesRequest(res.data.id, files.files);       
+      toast.success(res.message);
+      onClose();
     } else {
-        toast.error(res.message);
+      toast.error(res.message);
     }
   }
-  
-  console.log("in", formData)
 
+  const handleDeleteProductImage = (index) => {
+
+    const productImages = [...formData.files];
+    productImages.splice(index, 1);
+
+    setFormData((prev) => {
+      return {
+        ...prev,
+        files: [...productImages]
+      }
+    })
+
+    const productFiles = [...files.files];
+    productFiles.splice(index, 1);
+
+    setFiles((prev) => {
+      return {
+        ...prev,
+        files: [...productFiles]
+      }
+    })
+  }
+  
   return (
     <div className="fixed w-full h-full bg-slate-200 bg-opacity-50 top-0 bottom-0 right-0 left-0 flex justify-center items-center">
       <div className="bg-white p-4 pb-6 rounded w-full max-w-2xl h-full max-h-[80%] overflow-hidden">
@@ -94,6 +121,7 @@ export default function UploadProduct({ onClose }) {
             <input
               id="name"
               name="name"
+              type="text"
               placeholder="Nombre del producto"
               value={formData.name}
               required
@@ -108,6 +136,7 @@ export default function UploadProduct({ onClose }) {
             <input
               id="brand"
               name="brand"
+              type="text"
               placeholder="Nombre de la marca"
               value={formData.brand}
               required
@@ -122,6 +151,7 @@ export default function UploadProduct({ onClose }) {
             <input
               id="price"
               name="price"
+              type="number"
               placeholder="Precio del producto"
               value={formData.price}
               required
@@ -136,6 +166,7 @@ export default function UploadProduct({ onClose }) {
             <input
               id="inventory"
               name="inventory"
+              type="number"
               placeholder="Stock del producto"
               value={formData.inventory}
               required
@@ -150,6 +181,7 @@ export default function UploadProduct({ onClose }) {
             <input
               id="description"
               name="description"
+              type="text"
               placeholder="Descripción del producto"
               value={formData.description}
               required
@@ -169,6 +201,9 @@ export default function UploadProduct({ onClose }) {
               onChange={handleChange}
               className="p-1 border border-[#ff5100] rounded outline-none"
             >
+              <option value="" className="text-[16px] font-medium">
+                Seleccionar Categoría
+              </option>
               {productCategory.map((el, index) => {
                 return (
                   <option
@@ -199,6 +234,7 @@ export default function UploadProduct({ onClose }) {
                   <input
                     type="file"
                     id="uploadImage"
+                    required
                     className="hidden"
                     onChange={handleUploadImage}
                   />
@@ -214,12 +250,25 @@ export default function UploadProduct({ onClose }) {
               {formData?.files[0] &&
                 formData.files.map((el, index) => {
                   return (
-                    <div key={index} className="w-[80px] h-[80px]">
+                    <div
+                      key={index}
+                      className="relative w-[80px] h-[80px] group"
+                    >
                       <img
                         src={el}
                         alt="Imagen del producto"
-                        className="bg-white border w-full h-full object-contain"
+                        className="bg-white border w-full h-full object-contain cursor-pointer"
+                        onClick={() => {
+                          setOpenFullScreenImage(true);
+                          setFullScreenImage(el);
+                        }}
                       />
+                      <div
+                        onClick={() => handleDeleteProductImage(index)}
+                        className="absolute bottom-0 right-0 p-[2px] text-red-600 hidden group-hover:block hover:scale-[108%]       cursor-pointer"
+                      >
+                        <MdDeleteForever />
+                      </div>
                     </div>
                   );
                 })}
@@ -237,6 +286,9 @@ export default function UploadProduct({ onClose }) {
               onChange={handleChange}
               className="p-1 border  border-[#ff5100] rounded outline-none"
             >
+              <option value="" className="text-[16px] font-medium">
+                Seleccionar Estado
+              </option>
               <option className="text-[14px] font-medium" value="nuevo">
                 Nuevo
               </option>
@@ -250,6 +302,12 @@ export default function UploadProduct({ onClose }) {
           </button>
         </form>
       </div>
+      {openFullScreenImage && (
+        <DisplayImage
+          imageUrl={fullScreenImage}
+          onClose={() => setOpenFullScreenImage(false)}
+        />
+      )}
     </div>
   );
 }
