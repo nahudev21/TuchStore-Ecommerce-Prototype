@@ -1,10 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UploadProduct from "../components/UploadProduct";
+import { getAllProductsRequest } from "../api/product";
+import AdminProductCard from "../components/adminProductCard";
 
 export default function AllProducts() {
 
   const [ openProductModal, setOpenProductModal ] = useState(false);
 
+  const [ allProducts, setAllProducts ] = useState([]);
+  
+  const getProducts = async () => {
+    const res = await getAllProductsRequest();
+    setAllProducts(res?.data || [])
+  }
+
+  useEffect(() => {
+    getProducts();
+  }, [])
+  console.log(allProducts)
   return (
     <div>
       <div className="bg-white py-2 px-4 flex justify-between items-center">
@@ -17,6 +30,17 @@ export default function AllProducts() {
           Cargar producto
         </button>
       </div>
+      <div className="grid grid-cols-5 gap-4 py-4 px-1">
+        {
+          allProducts.map((product) => {
+            return (
+              <AdminProductCard data={product} key={product.id} getProducts={getProducts} />
+ 
+            );
+          })
+        }
+      </div> 
+
       {
         openProductModal && (<UploadProduct onClose={() => setOpenProductModal(false)} />)
       }
