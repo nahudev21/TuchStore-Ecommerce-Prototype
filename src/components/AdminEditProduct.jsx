@@ -17,6 +17,7 @@ export default function AdminEditProduct({ onClose, data, getProducts }) {
     name: data?.name,
     brand: data?.brand,
     price: data?.price,
+    sellingPrice: data?.sellingPrice,
     inventory: data?.inventory,
     status: data?.status,
     description: data?.description,
@@ -163,6 +164,21 @@ export default function AdminEditProduct({ onClose, data, getProducts }) {
             />
           </div>
           <div className="grid gap-1">
+            <label htmlFor="sellingPrice" className="mt-1 font-medium">
+              Precio de venta
+            </label>
+            <input
+              id="sellingPrice"
+              name="sellingPrice"
+              type="number"
+              placeholder="Precio del producto"
+              value={formData.sellingPrice}
+              required
+              onChange={handleChange}
+              className="p-1 border border-[#ff5100] rounded outline-none placeholder:text-[14px]"
+            />
+          </div>
+          <div className="grid gap-1">
             <label htmlFor="inventory" className="mt-1 font-medium">
               Inventario
             </label>
@@ -218,6 +234,29 @@ export default function AdminEditProduct({ onClose, data, getProducts }) {
                   </option>
                 );
               })}
+            </select>
+          </div>
+          <div className="grid gap-1 max-h-[40px]">
+            <label htmlFor="status" className="mt-1 font-medium">
+              Estado
+            </label>
+            <select
+              id="status"
+              name="status"
+              value={formData.status}
+              required
+              onChange={handleChange}
+              className="p-1 border  border-[#ff5100] rounded outline-none"
+            >
+              <option value="" className="text-[16px] font-medium">
+                Seleccionar Estado
+              </option>
+              <option className="text-[14px] font-medium" value="nuevo">
+                Nuevo
+              </option>
+              <option className="text-[14px] font-medium" value="usado">
+                Usado
+              </option>
             </select>
           </div>
           <div className="grid gap-1">
@@ -276,29 +315,7 @@ export default function AdminEditProduct({ onClose, data, getProducts }) {
                 })}
             </div>
           </div>
-          <div className="grid gap-1 max-h-[40px]">
-            <label htmlFor="status" className="mt-1 font-medium">
-              Estado
-            </label>
-            <select
-              id="status"
-              name="status"
-              value={formData.status}
-              required
-              onChange={handleChange}
-              className="p-1 border  border-[#ff5100] rounded outline-none"
-            >
-              <option value="" className="text-[16px] font-medium">
-                Seleccionar Estado
-              </option>
-              <option className="text-[14px] font-medium" value="nuevo">
-                Nuevo
-              </option>
-              <option className="text-[14px] font-medium" value="usado">
-                Usado
-              </option>
-            </select>
-          </div>
+          <div></div>
           <button className="px-2 py-1 mt-1 bg-[#ff5100] text-white hover:scale-[102%] transition-all">
             Actualizar producto
           </button>

@@ -37,7 +37,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const res = await loginRequest(formData);
-    dispatch(setToken(res.data.token));
+    dispatch(setToken(res?.data?.token));
     console.log(res)
    
     if(res.success === true) {
@@ -46,7 +46,8 @@ export default function Login() {
       const userDetails = await getUserDetailsRequest(res.data.id);
       dispatch(setUserDetails(userDetails.data));
     } else {
-      toast.error(res.message);
+      console.log("false", res.message)
+      toast(res.message)
     }
 
   } 

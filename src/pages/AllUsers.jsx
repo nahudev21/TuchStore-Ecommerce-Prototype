@@ -3,6 +3,8 @@ import { getAllUsersRequest } from "../api/user";
 import { MdModeEdit } from "react-icons/md";
 import { MdDeleteForever } from "react-icons/md";
 import ChangeUserRol from "../components/ChangeUserRol";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
 
 export default function AllUsers() {
 
@@ -60,7 +62,9 @@ export default function AllUsers() {
                       );
                     })}
                   </td>
-                  <td>hoy</td>
+                  <td>
+                    {format(user.createdAt, "dd/MM/yyyy", { locale: es })}
+                  </td>
                   <td>
                     <button
                       className="rounded-full text-[#4189e6b7] cursor-pointer p-2 text-[20px] hover:scale-[105%]"

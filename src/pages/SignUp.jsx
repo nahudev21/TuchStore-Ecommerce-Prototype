@@ -37,8 +37,12 @@ export default function SignUp() {
       e.preventDefault();
       if(formData.password === formData.confirmPassword) {
         const res = await registerRequest(formData);
-        toast.success("Usuario creado con exito!");
-        navigate("/login");
+        if(res.success === true) {
+          toast.success("Usuario creado con exito!");
+          navigate("/login");
+        } else {
+          toast.error(res.message);
+        }
       } else {
         toast("Las contraseñas no son iguales!");
       }
