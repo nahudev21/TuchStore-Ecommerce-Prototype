@@ -47,25 +47,28 @@ export const loginRequest = async (user) => {
       headers: { "Content-type": "application/json" },
       body: JSON.stringify(user),
     });
-
     // Verificar si la respuesta es exitosa
     if (response.ok) {
       const json = await response.json();
       console.log("Login exitoso:", json);
-      return { success: true, data: json.data, message: "Inicio de sesión exitoso!" }; // Retornar datos si el login es exitoso
+      return {
+        success: true,
+        data: json.data,
+        message: "Inicio de sesión exitoso!",
+      }; // Retornar datos si el login es exitoso
     } else {
-      // Si la respuesta no es exitosa, manejar los errores de la API
-      const errorJson = await response.json();
+      const errorRequest = await response.json();
+
       if (response.status === 401) {
-        // Error de autenticación, por ejemplo, credenciales incorrectas
-        console.log("Error 401: Unauthorized", errorJson);
-        return { success: false, message: "Credenciales incorrectas" };
+        return {
+          success: false,
+          message: "Credenciales incorrectas!",
+        };
       }
-      // Para otros códigos de error, como 400, 500, etc.
-      console.log("Error en la solicitud", errorJson);
+
       return {
         success: false,
-        message: errorJson.message || "Error desconocido",
+        message: errorRequest.message || "Error desconocido",
       };
     }
   } catch (error) {

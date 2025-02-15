@@ -30,20 +30,24 @@ export default function AllProducts() {
           Cargar producto
         </button>
       </div>
-      <div className="grid grid-cols-5 gap-4 py-4 px-1">
-        {
-          allProducts.map((product) => {
-            return (
-              <AdminProductCard data={product} key={product.id} getProducts={getProducts} />
- 
-            );
-          })
-        }
-      </div> 
+      <div className="flex flex-wrap gap-4 py-4 px-1 h-[calc(100vh-190px)] overflow-y-scroll ">
+        {allProducts.map((product) => {
+          return (
+            <AdminProductCard
+              data={product}
+              key={product.id}
+              getProducts={getProducts}
+            />
+          );
+        })}
+      </div>
 
-      {
-        openProductModal && (<UploadProduct onClose={() => setOpenProductModal(false)} />)
-      }
+      {openProductModal && (
+        <UploadProduct
+          onClose={() => setOpenProductModal(false)}
+          getProducts={getProducts}
+        />
+      )}
     </div>
   );
 }

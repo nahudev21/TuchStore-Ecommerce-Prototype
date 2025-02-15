@@ -8,19 +8,20 @@ import { toast } from "react-toastify";
 import DisplayImage from "./DisplayImage";
 import { MdDeleteForever } from "react-icons/md";
 
-export default function UploadProduct({ onClose }) {
+export default function UploadProduct({ onClose, getProducts }) {
 
   const [formData, setFormData] = useState({
     name: "",
     brand: "",
     price: "",
+    sellingPrice: "",
     inventory: "",
     status: "",
     description: "",
     category: "",
     files: [],
   });
-
+  console.log(formData)
   const [ files, setFiles ] = useState({
     files: []
   });
@@ -68,6 +69,7 @@ export default function UploadProduct({ onClose }) {
     if(res.success) {
       const resImage = await uploadProductImagesRequest(res.data.id, files.files);       
       toast.success(res.message);
+      getProducts();
       onClose();
     } else {
       toast.error(res.message);
@@ -160,6 +162,21 @@ export default function UploadProduct({ onClose }) {
             />
           </div>
           <div className="grid gap-1">
+            <label htmlFor="sellingPrice" className="mt-1 font-medium">
+              Precio de venta
+            </label>
+            <input
+              id="sellingPrice"
+              name="sellingPrice"
+              type="number"
+              placeholder="Precio del producto"
+              value={formData.sellingPrice}
+              required
+              onChange={handleChange}
+              className="p-1 border border-[#ff5100] rounded outline-none placeholder:text-[14px]"
+            />
+          </div>
+          <div className="grid gap-1">
             <label htmlFor="inventory" className="mt-1 font-medium">
               Inventario
             </label>
@@ -217,6 +234,29 @@ export default function UploadProduct({ onClose }) {
               })}
             </select>
           </div>
+          <div className="grid gap-1 max-h-[40px]">
+            <label htmlFor="status" className="mt-1 font-medium">
+              Estado
+            </label>
+            <select
+              id="status"
+              name="status"
+              value={formData.status}
+              required
+              onChange={handleChange}
+              className="p-1 border  border-[#ff5100] rounded outline-none"
+            >
+              <option value="" className="text-[16px] font-medium">
+                Seleccionar Estado
+              </option>
+              <option className="text-[14px] font-medium" value="nuevo">
+                Nuevo
+              </option>
+              <option className="text-[14px] font-medium" value="usado">
+                Usado
+              </option>
+            </select>
+          </div>
           <div className="grid gap-1">
             <label htmlFor="files" className="mt-1 font-medium">
               Imagen
@@ -234,7 +274,6 @@ export default function UploadProduct({ onClose }) {
                   <input
                     type="file"
                     id="uploadImage"
-                    required
                     className="hidden"
                     onChange={handleUploadImage}
                   />
@@ -274,29 +313,7 @@ export default function UploadProduct({ onClose }) {
                 })}
             </div>
           </div>
-          <div className="grid gap-1 max-h-[40px]">
-            <label htmlFor="status" className="mt-1 font-medium">
-              Estado
-            </label>
-            <select
-              id="status"
-              name="status"
-              value={formData.status}
-              required
-              onChange={handleChange}
-              className="p-1 border  border-[#ff5100] rounded outline-none"
-            >
-              <option value="" className="text-[16px] font-medium">
-                Seleccionar Estado
-              </option>
-              <option className="text-[14px] font-medium" value="nuevo">
-                Nuevo
-              </option>
-              <option className="text-[14px] font-medium" value="usado">
-                Usado
-              </option>
-            </select>
-          </div>
+          <div></div>
           <button className="px-2 py-1 mt-1 bg-[#ff5100] text-white hover:scale-[102%] transition-all">
             Cargar producto
           </button>

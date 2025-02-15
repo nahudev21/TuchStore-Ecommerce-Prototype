@@ -1,4 +1,3 @@
-import { data } from "autoprefixer";
 import { API_URL } from "../api/config";
 
 export const createProductRequest = async (product) => {
@@ -6,6 +5,7 @@ export const createProductRequest = async (product) => {
     name: product.name,
     brand: product.brand,
     price: product.price,
+    sellingPrice: product.sellingPrice,
     inventory: product.inventory,
     status: product.status,
     description: product.description,
@@ -43,6 +43,7 @@ export const editProductRequest = async (product, id) => {
     name: product.name,
     brand: product.brand,
     price: product.price,
+    sellingPrice: product.sellingPrice,
     inventory: product.inventory,
     status: product.status,
     description: product.description,
@@ -209,6 +210,7 @@ const productMapped = (product, imgs) => {
     name: product.data.name,
     description: product.data.description,
     price: product.data.price,
+    sellingPrice: product.data.sellingPrice,
     inventory: product.data.inventory,
     status: product.status,
     brand: product.data.brand,
@@ -223,6 +225,7 @@ const listProductsMapped = (product, imgs) => {
     name: product.name,
     description: product.description,
     price: product.price,
+    sellingPrice: product.sellingPrice,
     inventory: product.inventory,
     status: product.status,
     brand: product.brand,
