@@ -30,7 +30,7 @@ export default function AllProducts() {
           Cargar producto
         </button>
       </div>
-      <div className="flex flex-wrap gap-4 py-4 px-1 h-[calc(100vh-190px)] overflow-y-scroll ">
+      <div className="flex flex-wrap gap-4 py-4 px-1 h-[calc(100vh-180px)] overflow-y-scroll ">
         {allProducts.map((product) => {
           return (
             <AdminProductCard
