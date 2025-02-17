@@ -167,6 +167,49 @@ export const getAllProductsRequest = async () => {
   }
 };
 
+export const getProductsByCategoryRequest = async (category) => {
+  try {
+    const response = await fetch(
+      `${API_URL}/products/${category}/all/products`,
+      {
+        method: "GET",
+        headers: { "Content-type": "Application/json" },
+      }
+    );
+    if (response.ok) {
+      const json = await response.json();
+      const { data } = json;
+
+      // Usar Promise.all para esperar a que todas las promesas dentro de `map` se resuelvan
+      const modifiedProducts = await Promise.all(
+        data.map(async (product) => {
+          const imagesId = getImageIdFromProducts(product); // Obtener los IDs de las imágenes
+
+          // Para obtener todas las imágenes, usamos map sobre `imagesId` y esperamos que todas se resuelvan
+          const images = await Promise.all(
+            imagesId.map(async (id) => {
+              const image = await getImageRequest(id); // Obtener la imagen para cada id
+              return image;
+            })
+          );
+
+          // Mapear las imágenes obtenidas al producto
+          return listProductsMapped(product, images); // Devuelve el producto modificado
+        })
+      );
+
+      return {
+        success: true,
+        data: modifiedProducts,
+        message: "Productos obtenidos con éxito!",
+      };
+    }
+  } catch (error) {
+    console.log("Error de red o de conexión", error);
+    return { message: "Error de red o de conexión" };
+  }
+}
+
 export const getImageRequest = async (id) => {
   try {
     const response = await fetch(`${API_URL}/images/image/download/${id}`, {
