@@ -18,12 +18,16 @@ export default function ProductBanner() {
   const nextImage = () => {
     if(desktopImages.length -1 > currentImage) {
       setCurrentImage((preve) => preve + 1);
+    } else {
+      setCurrentImage(0);
     }
   }
 
   const previusImage = () => {
     if (currentImage != 0) {
       setCurrentImage((preve) => preve - 1);
+    } else {
+      setCurrentImage(desktopImages.length -1);
     }
   }
 
