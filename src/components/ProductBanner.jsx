@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import image1_banner from "../assets/Banner2_home.png";
 import image2_banner from "../assets/image2_banner.webp";
 import { FaAngleLeft } from "react-icons/fa6";
@@ -26,6 +26,20 @@ export default function ProductBanner() {
       setCurrentImage((preve) => preve - 1);
     }
   }
+
+  useEffect(() => {
+
+    const interval = setInterval(() => {
+      if(desktopImages.length -1 > currentImage) {
+        nextImage();
+      } else {
+        setCurrentImage(0);
+      }
+    }, 4000)
+
+    return () => clearInterval(interval);
+
+  }, [currentImage])
    
   return (
     <div className="container mx-auto px-4 rounded ">
