@@ -29,7 +29,7 @@ export default function Header() {
   }
 
   return (
-    <header className="h-16 shadow-md bg-white">
+    <header className="h-16 w-full shadow-md bg-white fixed z-40">
       <div className="container h-full mx-auto flex items-center justify-between px-4">
         <Link to="/">
           <div className="flex items-center justify-center">
@@ -90,7 +90,7 @@ export default function Header() {
             <span>
               <FaShoppingCart />
             </span>
-            <div className="bg-[#ff5100] text-white w-4 h-4 p-1 flex items-center justify-center rounded-full absolute -top-1 -right-1">
+            <div className="bg-[#ff5100] text-white w-4 h-4 flex items-center justify-center rounded-full absolute -top-2 -right-2">
               <p className="text-[12px]">0</p>
             </div>
           </div>
