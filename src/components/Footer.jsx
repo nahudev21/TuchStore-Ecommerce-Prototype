@@ -1,7 +1,7 @@
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-200">
+    <footer className="bg-slate-200 w-full bottom-0">
       <div className="container mx-auto p-4">
         <p className="text-center font-bold " title="Tienda Online">Footer Dinamico de TuchStore</p>
       </div>

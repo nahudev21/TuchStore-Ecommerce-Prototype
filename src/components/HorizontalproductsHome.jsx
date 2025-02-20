@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { getProductsByCategoryRequest } from "../api/product";
+import { addToCart } from "../api/cart";
 import displayCurrency from "../helpers/displayCurrency";
 import { FaAngleLeft } from "react-icons/fa6";
 import { FaAngleRight } from "react-icons/fa6";
@@ -56,7 +58,8 @@ export default function HorizontalproductsHome({ category, heading }) {
         ) : (
           data.map((product) => {
             return (
-              <div
+              <Link
+                to={"product/" + product.id}
                 key={product.id}
                 className="h-36 min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] bg-white rounded-sm shadow flex"
               >
@@ -80,11 +83,14 @@ export default function HorizontalproductsHome({ category, heading }) {
                       {displayCurrency(product?.sellingPrice)}
                     </p>
                   </div>
-                  <button className="px-1 py-[2px] mt-1 bg-[#eb611f] w-full text-white text-[14px] hover:bg-[#b35428]">
+                  <button
+                    className="px-1 py-[2px] mt-1 bg-[#eb601fe7] w-full text-white text-[14px] hover:bg-[#eb601f]"
+                    onClick={(e) => addToCart(e, product?.id)}
+                  >
                     Agregar al carrito
                   </button>
                 </div>
-              </div>
+              </Link>
             );
           })
         )}

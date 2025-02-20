@@ -8,7 +8,7 @@ export default function Home() {
     <div>
       <CategoryList />
       <ProductBanner />
-      <HorizontalproductsHome category="Celulares" heading="Dispositivos Top" />
+      <HorizontalproductsHome category="Auriculares" heading="AirPods Top" />
       <HorizontalproductsHome category="Cargadores" heading="Cargadores de todas las marcas" />
       <VerticalproductsHome category="Celulares" heading="Todos los dispositivos" />
     </div>
