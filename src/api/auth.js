@@ -54,7 +54,7 @@ export const loginRequest = async (user) => {
       return {
         success: true,
         data: json.data,
-        message: "Inicio de sesión exitoso!",
+        message: "Haz iniciado sesión",
       }; // Retornar datos si el login es exitoso
     } else {
       const errorRequest = await response.json();
@@ -85,7 +85,7 @@ export const logoutRequest = async (token) => {
       headers: { Authorization: `Bearer ${token}` },
     });
     if(response.ok) {
-      return { success: true, message: "Cierre de sesión con éxito!" }
+      return { success: true, message: "Saliste de tu cuenta..." }
     } else {
       if(response.status === 401) {
         return { success: false, message: "Token incorrecto!" }

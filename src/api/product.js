@@ -255,9 +255,9 @@ const productMapped = (product, imgs) => {
     price: product.data.price,
     sellingPrice: product.data.sellingPrice,
     inventory: product.data.inventory,
-    status: product.status,
+    status: product.data.status,
     brand: product.data.brand,
-    category: product.category.name,
+    category: product.data.category.name,
     images: imgs,
   };
 };
