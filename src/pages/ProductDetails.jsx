@@ -4,7 +4,7 @@ import displayCurrency from "../helpers/displayCurrency";
 import { useParams } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 import { FaStarHalfAlt } from "react-icons/fa";
-import VerticalproductsHome from "../components/VerticalCardProduct";
+import GridCategoryProductDisplay from "../components/GridCategoryProductDisplay";
 
 export default function ProductDetails() {
 
@@ -72,7 +72,7 @@ export default function ProductDetails() {
       <div className="min-h-[200px] flex flex-col lg:flex-row gap-4 p-5">
         {/*imagenes*/}
         <div className="h-96 flex flex-col lg:flex-row-reverse gap-4">
-          <div className="h-[300px] 2-[300px] lg:h-96 lg:w-96 bg-slate-200 relative ">
+          <div className="h-[300px] 2-[300px] lg:h-96 lg:w-96 bg-slate-200 relative p-1">
             <img
               src={activeImage}
               className="w-full h-full object-contain mix-blend-multiply cursor-move"
@@ -81,7 +81,7 @@ export default function ProductDetails() {
             />
             {/*zoom de la imagen*/}
             {zoomImage && (
-              <div className="hidden lg:block absolute z-10 min-w-[400px] min-h-[400px] overflow-hidden bg-slate-200 p-1 -right-[423px] top-0">
+              <div className="hidden lg:block absolute z-10 min-w-[400px] min-h-[400px] overflow-hidden bg-slate-200 p-5 -right-[455px] top-0">
                 <div
                   className="w-full h-full min-w-[400px] min-h-[400px] mix-blend-multiply scale-[120%]"
                   style={{
@@ -206,7 +206,7 @@ export default function ProductDetails() {
       </div>
 
       {data?.category && (
-        <VerticalproductsHome
+        <GridCategoryProductDisplay
           category={data?.category}
           heading="Productos relacionados"
         />
