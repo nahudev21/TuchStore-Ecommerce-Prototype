@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getProductByIdRequest } from "../api/product";
 import displayCurrency from "../helpers/displayCurrency";
 import { useParams } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 import { FaStarHalfAlt } from "react-icons/fa";
+import VerticalproductsHome from "../components/VerticalCardProduct";
 
 export default function ProductDetails() {
 
@@ -22,7 +23,12 @@ export default function ProductDetails() {
   const [ loading, setLoading ] = useState(true);
   const productImageListLoading = new Array(5).fill(null);
   const [ activeImage, setActiveImage ] = useState("");
-
+  const [ zoomImage, setZoomImage ] = useState(false);
+  const [ zoomImageCoordinate, setZoomImageCoordinate ] = useState({
+    x: 0,
+    y: 0,
+  })
+ 
   const { id } = useParams();
 
   const getProductDetails = async () => {
@@ -42,17 +48,52 @@ export default function ProductDetails() {
     setActiveImage(imageUrl);
   }
 
+  const handleZoomImage = useCallback((e) => {
+    setZoomImage(true);
+    const { left, top, width, height } = e.target.getBoundingClientRect();
+
+    const x = (e.clientX - left) / width;
+    const y = (e.clientY - top) / height;
+    console.log("Coordinadas", left, top, width, height)
+
+    setZoomImageCoordinate({
+      x,
+      y
+    })
+  }, [zoomImageCoordinate]) 
+
+  const handleLeaveZoomImage = () => {
+    setZoomImage(false);
+  }
+
   console.log(data)
   return (
-    <div className="container mx-auto p-4">
-      <div className="min-h-[200px] flex flex-col lg:flex-row gap-4">
+    <div className="container mx-auto px-10 py-4 ">
+      <div className="min-h-[200px] flex flex-col lg:flex-row gap-4 p-5">
         {/*imagenes*/}
         <div className="h-96 flex flex-col lg:flex-row-reverse gap-4">
-          <div className="h-[300px] 2-[300px] lg:h-96 lg:w-96 bg-slate-200 ">
+          <div className="h-[300px] 2-[300px] lg:h-96 lg:w-96 bg-slate-200 relative ">
             <img
               src={activeImage}
-              className="w-full h-full object-contain mix-blend-multiply"
+              className="w-full h-full object-contain mix-blend-multiply cursor-move"
+              onMouseMove={handleZoomImage}
+              onMouseLeave={handleLeaveZoomImage}
             />
+            {/*zoom de la imagen*/}
+            {zoomImage && (
+              <div className="hidden lg:block absolute z-10 min-w-[400px] min-h-[400px] overflow-hidden bg-slate-200 p-1 -right-[423px] top-0">
+                <div
+                  className="w-full h-full min-w-[400px] min-h-[400px] mix-blend-multiply scale-[120%]"
+                  style={{
+                    backgroundImage: `url(${activeImage})`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: `${zoomImageCoordinate.x * 100}% ${
+                      zoomImageCoordinate.y * 100
+                    }%`,
+                  }}
+                ></div>
+              </div>
+            )}
           </div>
           <div className="h-full">
             {loading ? (
@@ -163,6 +204,13 @@ export default function ProductDetails() {
           </div>
         )}
       </div>
+
+      {data?.category && (
+        <VerticalproductsHome
+          category={data?.category}
+          heading="Productos relacionados"
+        />
+      )}
     </div>
   );
 }
