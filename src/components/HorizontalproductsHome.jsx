@@ -1,12 +1,19 @@
 import { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getProductsByCategoryRequest } from "../api/product";
-import { addToCart } from "../api/cart";
+import {addItemToCartRequest} from "../api/cart";
 import displayCurrency from "../helpers/displayCurrency";
 import { FaAngleLeft } from "react-icons/fa6";
 import { FaAngleRight } from "react-icons/fa6";
+import { useDispatch } from "react-redux";
+import { setUpdateCart } from "../store/slices/cartSlice";
+import { getMyCartRequest } from "../api/cart";
 
 export default function HorizontalproductsHome({ category, heading }) {
+
+  const { user, token } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const [ data, setData ] = useState([]);
   const [ loading, setLoading ] = useState(true);
@@ -25,6 +32,13 @@ export default function HorizontalproductsHome({ category, heading }) {
   useEffect(() => {
     getProductsByCategory();
   }, []);
+
+  const handleAddItemToCart = async (e, product) => {
+    const itemadded = await addItemToCartRequest(e, product, token);
+
+    const res = await getMyCartRequest(user?.id, token);
+    dispatch(setUpdateCart(res))
+  }
 
   const scrollRigth = () => {
     scrollElement.current.scrollLeft += 300;
@@ -85,7 +99,7 @@ export default function HorizontalproductsHome({ category, heading }) {
                   </div>
                   <button
                     className="px-1 py-[2px] mt-1 bg-[#eb601fe7] w-full text-white text-[14px] hover:bg-[#eb601f]"
-                    onClick={(e) => addToCart(e, product?.id)}
+                    onClick={(e) => handleAddItemToCart(e, product)}
                   >
                     Agregar al carrito
                   </button>

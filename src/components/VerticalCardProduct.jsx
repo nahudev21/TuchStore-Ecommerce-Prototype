@@ -4,8 +4,15 @@ import displayCurrency from "../helpers/displayCurrency";
 import { FaAngleLeft } from "react-icons/fa6";
 import { FaAngleRight } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { addItemToCartRequest, getMyCartRequest } from "../api/cart";
+import { useDispatch, useSelector } from "react-redux";
+import { setUpdateCart } from "../store/slices/cartSlice";
 
 export default function VerticalproductsHome({ category, heading }) {
+
+  const { user, token } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const loadingList = new Array(13).fill(null);
@@ -23,6 +30,13 @@ export default function VerticalproductsHome({ category, heading }) {
   useEffect(() => {
     getProductsByCategory();
   }, []);
+
+  const handleAddItemToCart = async (e, product) => {
+    const itemadded = await addItemToCartRequest(e, product, token);
+  
+    const res = await getMyCartRequest(user?.id, token);
+    dispatch(setUpdateCart(res))
+  }
 
   const scrollRigth = () => {
     scrollElement.current.scrollLeft += 300;
@@ -85,7 +99,10 @@ export default function VerticalproductsHome({ category, heading }) {
                       {displayCurrency(product?.sellingPrice)}
                     </p>
                   </div>
-                  <button className="px-1 py-[2px] mt-1 bg-[#eb601fe7] w-full text-white text-[14px] hover:bg-[#eb601f]">
+                  <button 
+                    className="px-1 py-[2px] mt-1 bg-[#eb601fe7] w-full text-white text-[14px] hover:bg-[#eb601f]"
+                    onClick={(e) => handleAddItemToCart(e, product)}
+                  >
                     Agregar al carrito
                   </button>
                 </div>

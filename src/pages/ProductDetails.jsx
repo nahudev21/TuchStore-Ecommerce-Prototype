@@ -4,11 +4,18 @@ import displayCurrency from "../helpers/displayCurrency";
 import { useParams } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 import { FaStarHalfAlt } from "react-icons/fa";
+import { addItemToCartRequest, getMyCartRequest } from "../api/cart";
 import GridCategoryProductDisplay from "../components/GridCategoryProductDisplay";
+import { useDispatch, useSelector } from "react-redux"; 
+import { setUpdateCart } from "../store/slices/cartSlice";
 
 export default function ProductDetails() {
 
+  const { user, token } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
   const [data, setData] = useState({
+    id: "",
     name: "",
     brand: "",
     price: "",
@@ -38,7 +45,6 @@ export default function ProductDetails() {
     setData(res?.data);
     setActiveImage(res?.data?.images[0])
   }  
-  console.log(loading)
 
   useEffect(() => {
     getProductDetails();
@@ -66,7 +72,13 @@ export default function ProductDetails() {
     setZoomImage(false);
   }
 
-  console.log(data)
+  const handleAddItemToCart = async (e) => {
+    const itemadded = await addItemToCartRequest(e, data, token);
+    
+    const res = await getMyCartRequest(user?.id, token);
+    dispatch(setUpdateCart(res))
+  }
+
   return (
     <div className="container mx-auto px-10 py-4 ">
       <div className="min-h-[200px] flex flex-col lg:flex-row gap-4 p-5">
@@ -193,7 +205,10 @@ export default function ProductDetails() {
               <button className="px-2 py-1 min-w-[140px] bg-[#4189e6c5] text-white font-medium rounded-sm hover:bg-[#4189e6e3] hover:scale-105 transition-all ">
                 Comprar ahora
               </button>
-              <button className="px-2 py-1 min-w-[140px] bg-[#eb601fe7] text-white font-medium rounded-sm hover:bg-[#eb601f] hover:scale-105 transition-all ">
+              <button 
+                className="px-2 py-1 min-w-[140px] bg-[#eb601fe7] text-white font-medium rounded-sm hover:bg-[#eb601f] hover:scale-105 transition-all "
+                onClick={(e) => handleAddItemToCart(e)}
+              >
                 Agregar al carrito
               </button>
             </div>

@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { logout } from "../store/slices/userSlice";
 import { useState } from "react";
 import Role from "../common/Rol";
+import { clearCart } from "../store/slices/cartSlice";
 
 export default function Header() {
 
@@ -17,12 +18,16 @@ export default function Header() {
   const { user, token } = useSelector((state) => state.user);
   const isAdmin = user?.roles?.some((role) => role.name === Role.ADMIN);
 
+  const cart = useSelector((state) => state.cart.cart);
+  const amountItems = cart?.items.reduce((total, item) => total + item.quantity, 0);
+  
   const handleLogout = async () => {
     const res = await logoutRequest(token);
 
     if(res.success === true) {
       toast(res.message);
       dispatch(logout());
+      dispatch(clearCart());
     } else {
       toast(res.message)
     }
@@ -90,9 +95,11 @@ export default function Header() {
             <span>
               <FaShoppingCart />
             </span>
-            <div className="bg-[#ff5100] text-white w-4 h-4 flex items-center justify-center rounded-full absolute -top-2 -right-2">
-              <p className="text-[12px]">0</p>
-            </div>
+            {amountItems != 0 && (
+              <div className="bg-[#ff5100] text-white w-4 h-4 flex items-center justify-center rounded-full absolute -top-2 -right-2">
+                <p className="text-[12px]">{amountItems}</p>
+              </div>
+            )}
           </div>
 
           <div className="p-2">
