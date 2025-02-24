@@ -27,7 +27,7 @@ export default function App() {
   return (
     <>
         <ToastContainer
-          position='top-center' 
+          position= "bottom-right" 
         />
         <Header />
         <main className="min-h-[calc(100vh-120px)] pt-16">

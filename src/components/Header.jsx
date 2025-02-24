@@ -91,16 +91,16 @@ export default function Header() {
             )}
           </div>
 
-          <div className="text-[23px] cursor-pointer relative">
+          <Link to="/cart" className="text-[23px] cursor-pointer relative">
             <span>
               <FaShoppingCart />
             </span>
-            {amountItems != 0 && (
+            {cart != null && amountItems != 0 && (
               <div className="bg-[#ff5100] text-white w-4 h-4 flex items-center justify-center rounded-full absolute -top-2 -right-2">
                 <p className="text-[12px]">{amountItems}</p>
               </div>
             )}
-          </div>
+          </Link>
 
           <div className="p-2">
             {token ? (
