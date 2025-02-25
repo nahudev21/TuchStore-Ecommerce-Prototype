@@ -141,19 +141,23 @@ export const getMyCartRequest = async (userId, token) => {
     });
     if (response.ok) {
       const { data } = await response.json();
-
-      // Obtener todas las imágenes correctamente resolviendo las promesas con Promise.all
-      const imgs = await Promise.all(
+      console.log("data", data)
+      // Usar Promise.all para esperar a que todas las promesas dentro de `map` se resuelvan
+      const modifiedProducts = await Promise.all(
         data.items.map(async (item) => {
+          // Para obtener todas las imágenes, usamos map sobre `imagesId` y esperamos que todas se resuelvan
           const images = await Promise.all(
-            item.product.images.map((image) => getImageRequest(image.imageId))
+            item.product.images.map(async (img) => {
+              const image = await getImageRequest(img.imageId); // Obtener la imagen para cada id
+              return image;
+            })
           );
-          return images; // Las URLs de las imágenes
+          // Mapear las imágenes obtenidas al producto
+          return cartItemsMapped(item, images); // Devuelve el producto modificado
         })
-      );
-      console.log(imgs);
-      console.log(cartMapped(data));
-      return cartMapped(data, imgs);
+      ); 
+      console.log(modifiedProducts)
+      return cartMapped(data.id, modifiedProducts);
     }
   } catch (error) {
     console.error(error);
@@ -177,20 +181,25 @@ export const getImageRequest = async (id) => {
   }
 };
 
-export const cartMapped = (data, imgs) => {
+export const cartMapped = (cartId, items) => {
   return {
-    id: data.id,
-    items: data.items.map((item) => ({
-      id: item.product.id,
-      name: item.product.name,
-      description: item.product.description,
-      price: item.product.price,
-      stock: item.product.inventory,
-      status: item.product.status,
-      brand: item.product.brand,
-      category: item.product.category.name,
-      images: imgs,
-      quantity: item.quantity,
-    })),
+    cartId: cartId,
+    items: items,
+  };
+}
+
+export const cartItemsMapped = (item, imgs) => {
+  return {
+    id: item.product.id,
+    name: item.product.name,
+    description: item.product.description,
+    price: item.product.price,
+    sellingPrice: item.product.sellingPrice,
+    inventory: item.product.inventory,
+    status: item.product.status,
+    brand: item.product.brand,
+    category: item.product.category.name,
+    images: imgs,
+    quantity: item.quantity,
   };
 };
