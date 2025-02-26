@@ -82,7 +82,7 @@ export default function VerticalproductsHome({ category, heading }) {
                     className="w-full h-full object-contain mix-blend-multiply hover:scale-110 transition-all"
                   />
                 </div>
-                <div className="p-2 grid gap-2">
+                <div className="p-2 grid gap-1">
                   <div>
                     <h2 className="font-medium text-[14px] md:text-[16px] line-clamp-1">
                       {product?.name}
@@ -90,6 +90,15 @@ export default function VerticalproductsHome({ category, heading }) {
                     <span className="block text-[13px] text-[#4189e6b7] font-medium ">
                       Estado {product.status}
                     </span>
+                    {product?.inventory > 0 ? (
+                      <span className="block text-[13px] font-medium text-slate-400">
+                        Stock disponible
+                      </span>
+                    ) : (
+                      <span className="block text-[13px] font-medium text-slate-400">
+                        Sin Stock
+                      </span>
+                    )}
                   </div>
                   <div className="flex flex-col">
                     <p className="text-red-400 line-through text-[15px]">
@@ -99,8 +108,9 @@ export default function VerticalproductsHome({ category, heading }) {
                       {displayCurrency(product?.sellingPrice)}
                     </p>
                   </div>
-                  <button 
-                    className="px-1 py-[2px] mt-1 bg-[#eb601fe7] w-full text-white text-[14px] hover:bg-[#eb601f]"
+                  <button
+                    disabled={product?.inventory === 0}
+                    className="px-1 py-[2px] mt-1 bg-[#eb601fe7] w-full text-white text-[14px] hover:bg-[#eb601f] disabled:cursor-not-allowed"
                     onClick={(e) => handleAddItemToCart(e, product)}
                   >
                     Agregar al carrito

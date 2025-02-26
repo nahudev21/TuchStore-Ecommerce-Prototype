@@ -1,7 +1,7 @@
 import { GoSearch } from "react-icons/go";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { FaShoppingCart } from "react-icons/fa";
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { logoutRequest } from "../api/auth";
 import { toast } from "react-toastify";
@@ -20,6 +20,11 @@ export default function Header() {
 
   const cart = useSelector((state) => state.cart.cart);
   const amountItems = cart?.items.reduce((total, item) => total + item.quantity, 0);
+
+  const navigate = useNavigate();
+  const searchInput = useLocation();
+  const [search, setSearch] = useState(searchInput?.search?.split("=")[1]);
+  console.log("busqueda", searchInput?.search?.split("=")[1]);
   
   const handleLogout = async () => {
     const res = await logoutRequest(token);
@@ -30,6 +35,17 @@ export default function Header() {
       dispatch(clearCart());
     } else {
       toast(res.message)
+    }
+  }
+
+  const handleSearch = (e) => {
+    const { value } = e.target;
+    setSearch(value); 
+
+    if(value) {
+      navigate(`/search?q=${value}`)
+    } else {
+      navigate("/search")
     }
   }
 
@@ -48,6 +64,8 @@ export default function Header() {
             type="text"
             placeholder="Buscar un producto aquí..."
             className="w-full outline-none"
+            onChange={handleSearch}
+            value={search}
           />
           <div className="text-lg min-w-[50px] h-8 text-white bg-[#ff5100] flex items-center justify-center rounded-r-full">
             <GoSearch />
