@@ -9,6 +9,7 @@ import { FaAngleRight } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import { setUpdateCart } from "../store/slices/cartSlice";
 import { getMyCartRequest } from "../api/cart";
+import { toast } from "react-toastify";
 
 export default function HorizontalproductsHome({ category, heading }) {
 
@@ -88,7 +89,15 @@ export default function HorizontalproductsHome({ category, heading }) {
                   <h2 className="font-medium text-[14px] md:text-[16px] line-clamp-1">
                     {product?.name}
                   </h2>
-                  <p className="capitalize text-black">{product?.category}</p>
+                  {product?.inventory > 0 ? (
+                    <span className="block text-[13px] font-medium text-slate-400">
+                      Stock disponible
+                    </span>
+                  ) : (
+                    <span className="block text-[13px] font-medium text-slate-400">
+                      Sin Stock
+                    </span>
+                  )}
                   <div className="flex flex-col">
                     <p className="text-red-400 line-through text-[15px]">
                       {displayCurrency(product?.price)}
@@ -98,7 +107,8 @@ export default function HorizontalproductsHome({ category, heading }) {
                     </p>
                   </div>
                   <button
-                    className="px-1 py-[2px] mt-1 bg-[#eb601fe7] w-full text-white text-[14px] hover:bg-[#eb601f]"
+                    disabled={product?.inventory === 0}
+                    className="px-1 py-[2px] mt-1 bg-[#eb601fe7] w-full text-white text-[14px] hover:bg-[#eb601f] disabled:cursor-not-allowed"
                     onClick={(e) => handleAddItemToCart(e, product)}
                   >
                     Agregar al carrito

@@ -36,19 +36,19 @@ export default function ProductDetails() {
     y: 0,
   })
  
-  const { id } = useParams();
+  const params = useParams();
 
   const getProductDetails = async () => {
     setLoading(true);
     setLoading(false);
-    const res = await getProductByIdRequest(id);
+    const res = await getProductByIdRequest(params.id);
     setData(res?.data);
     setActiveImage(res?.data?.images[0])
   }  
 
   useEffect(() => {
     getProductDetails();
-  }, [])
+  }, [params])
 
   const handleMouseEnterImage = (imageUrl) => {
     setActiveImage(imageUrl);
@@ -202,11 +202,15 @@ export default function ProductDetails() {
               </p>
             </div>
             <div className="flex items-center gap-2 my-2">
-              <button className="px-2 py-1 min-w-[140px] bg-[#4189e6c5] text-white font-medium rounded-sm hover:bg-[#4189e6e3] hover:scale-105 transition-all ">
+              <button
+                disabled={data?.inventory === 0}
+                className="px-2 py-1 min-w-[140px] bg-[#4189e6c5] text-white font-medium rounded-sm hover:bg-[#4189e6e3] hover:scale-105 transition-all disabled:cursor-not-allowed"
+              >
                 Comprar ahora
               </button>
-              <button 
-                className="px-2 py-1 min-w-[140px] bg-[#eb601fe7] text-white font-medium rounded-sm hover:bg-[#eb601f] hover:scale-105 transition-all "
+              <button
+                disabled={data?.inventory === 0}
+                className="px-2 py-1 min-w-[140px] bg-[#eb601fe7] text-white font-medium rounded-sm hover:bg-[#eb601f] hover:scale-105 transition-all disabled:cursor-not-allowed"
                 onClick={(e) => handleAddItemToCart(e)}
               >
                 Agregar al carrito
