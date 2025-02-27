@@ -69,7 +69,7 @@ export default function Cart() {
   const totalPrice = data.reduce((preve, current) => preve + (current?.quantity * current?.sellingPrice), 0)
 
   return (
-    <div className="container p-4 mx-auto">
+    <div className="container p-4 mx-auto min-h-[calc(100vh-120px)]">
       <div className="flex flex-col lg:flex-row gap-10 ">
         {/*Vista de productos*/}
         <div className="w-full max-w-3xl ">

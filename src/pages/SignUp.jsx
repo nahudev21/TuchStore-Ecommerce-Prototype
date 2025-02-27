@@ -17,8 +17,11 @@ export default function SignUp() {
       lastName: "",
       email: "",
       password: "",
-      confirmPassword: ""
+      confirmPassword: "",
+      roles: ["USER"]
     }) 
+
+    console.log("User", formData)
   
     const handleChange = (e) => {
   

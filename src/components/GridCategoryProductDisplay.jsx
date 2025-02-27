@@ -37,7 +37,7 @@ export default function GridCategoryProductDisplay({ category, heading }) {
   return (
     <div className="container mx-auto px-4 py-2 my-4 relative">
       <h2 className="text-2xl font-semibold ">{heading}</h2>
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,320px))] justify-between md:gap-6 my-6 overflow-x-scroll scrollbar-none transition-all">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(260px,280px))] justify-center md:justify-between md:gap-4 my-6 overflow-x-scroll scrollbar-none transition-all">
         {loading ? (
           <p>Cargando...</p>
         ) : (
@@ -46,7 +46,7 @@ export default function GridCategoryProductDisplay({ category, heading }) {
               <Link
                 to={"/product/" + product.id}
                 key={product.id}
-                className="min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] bg-white rounded-sm shadow"
+                className="w-full min-w-[280px] md:min-w-[280px] max-w-[280px] md:max-w-[280px] bg-white rounded-sm shadow"
                 onClick={scrollTop}
               >
                 <div className="h-48 bg-slate-200 p-4 min-w-[280px] md:min-w-[145px] flex items-center justify-center">

@@ -23,8 +23,9 @@ export default function Header() {
 
   const navigate = useNavigate();
   const searchInput = useLocation();
-  const [search, setSearch] = useState(searchInput?.search?.split("=")[1]);
-  console.log("busqueda", searchInput?.search?.split("=")[1]);
+  const urlSearch = new URLSearchParams(searchInput?.search);
+  const searchQuery = urlSearch.getAll("q");
+  const [search, setSearch] = useState(searchQuery);
   
   const handleLogout = async () => {
     const res = await logoutRequest(token);
@@ -48,6 +49,14 @@ export default function Header() {
       navigate("/search")
     }
   }
+
+  const hanldeMouseEnter = () => {
+    setMenuDisplay(true);
+  }
+
+  const hanldeMouseLeave = () => {
+    setMenuDisplay(false);
+  };
 
   return (
     <header className="h-16 w-full shadow-md bg-white fixed z-40">
@@ -73,14 +82,13 @@ export default function Header() {
         </div>
 
         <div className="flex items-center gap-4">
-          <div className="relative flex justify-center">
+          <div
+            className="relative flex justify-center"
+            onMouseEnter={hanldeMouseEnter}
+            onMouseLeave={hanldeMouseLeave}
+          >
             {user?.id && (
-              <div
-                className="text-2xl cursor-pointer"
-                onClick={() => {
-                  setMenuDisplay((prev) => !prev);
-                }}
-              >
+              <div className="text-2xl cursor-pointer">
                 {user ? (
                   <span className="text-black font-bold text-[14px]">
                     Bienvenido {user.firstName}
@@ -91,15 +99,19 @@ export default function Header() {
               </div>
             )}
             {menuDisplay && (
-              <div className="absolute bg-white font-bold text-[14px] top-10 bottom-0 h-fit p-2 shadow-lg rounded-sm">
+              <div className="w-36 flex justify-center absolute bg-white border-2 border-[#eb611f] font-bold text-[14px] top-9 bottom-0 h-fit p-1 shadow-lg rounded transition-all">
                 <nav>
-                  {isAdmin && (
+                  {isAdmin ? (
                     <Link
                       to="/admin-panel"
-                      className="whitespace-nowrap hover:text-[#eb611f] hidden md:block p-1 rounded-sm"
-                      onClick={() => {
-                        setMenuDisplay((prev) => !prev);
-                      }}
+                      className="whitespace-nowrap hover:text-[#eb611f] hidden md:block py-[2px] rounded-sm"
+                    >
+                      Mi Cuenta
+                    </Link>
+                  ) : (
+                    <Link
+                      to=""
+                      className="whitespace-nowrap hover:text-[#eb611f] hidden md:block py-[2px] rounded-sm"
                     >
                       Mi Cuenta
                     </Link>
@@ -114,8 +126,8 @@ export default function Header() {
               <FaShoppingCart />
             </span>
             {cart != null && amountItems != 0 && (
-              <div className="bg-[#ff5100] text-white w-4 h-4 flex items-center justify-center rounded-full absolute -top-2 -right-2">
-                <p className="text-[12px]">{amountItems}</p>
+              <div className="bg-[#ff5100] text-white w-5 h-5 flex items-center justify-center rounded-full absolute -top-2 -right-2">
+                <p className="text-[13px]">{amountItems}</p>
               </div>
             )}
           </Link>

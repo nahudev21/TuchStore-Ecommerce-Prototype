@@ -11,20 +11,23 @@ export default function SearchProducts() {
   const query = useLocation();
   const productName = query.search.substring(3);
 
-  const searchProductsByName = async () => {
+  const searchProductsByName = () => {
     setLoading(true);
-    const res = await getProductsByNameRequest(productName);
-    setLoading(false);
-    setData(res.data)
+    let timer = setTimeout( async () => {
+      const res = await getProductsByNameRequest(productName);
+      setLoading(false);
+      setData(res.data)
+    }, 1000);
+
+    return () => clearTimeout(timer);
   }
 
-  console.log("data", data)
   useEffect(() => {
     searchProductsByName();
   }, [query])
 
   return (
-    <div className='container mx-auto p-4'>
+    <div className='container mx-auto p-4 min-h-[calc(100vh-120px)] '>
       {
         loading && (<p className='text-lg text-center'>Cargando...</p>)
       }
@@ -33,7 +36,7 @@ export default function SearchProducts() {
 
       {
         data?.length === 0 && !loading && (
-            <p className='bg-white text-lg p-4 text-center'>Productos no encontrados relacionados a tu búsqueda...</p>
+            <p className='text-lg p-4 text-center font-medium'>Productos no encontrados relacionados a tu búsqueda...</p>
         )
       }
 

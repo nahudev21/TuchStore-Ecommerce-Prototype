@@ -18,7 +18,7 @@ export default function ProductsSearchCard({ loading, data=[] }) {
   };
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fit,minmax(260px,300px))] justify-center md:justify-between md:gap-4 overflow-x-scroll scrollbar-none transition-all">
+    <div className="grid grid-cols-[repeat(auto-fill,minmax(260px,300px))] justify-center md:justify-between md:gap-4 overflow-x-scroll scrollbar-none transition-all">
       {loading ? (
         <p>Cargando...</p>
       ) : (
@@ -26,7 +26,7 @@ export default function ProductsSearchCard({ loading, data=[] }) {
           return (
             <Link
               to={"/product/" + product.id}
-              key={product.id}
+              key={"searchProduct" + product.id}
               className="w-full min-w-[280px] md:min-w-[300px] max-w-[280px] md:max-w-[300px] bg-white rounded-sm shadow"
               onClick={scrollTop}
             >
