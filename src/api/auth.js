@@ -7,6 +7,7 @@ export const registerRequest = async (user) => {
     lastName: user.lastName,
     email: user.email,
     password: user.password,
+    roles: user.roles,
   }
 
   try {

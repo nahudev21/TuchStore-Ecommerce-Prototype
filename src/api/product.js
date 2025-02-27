@@ -211,6 +211,54 @@ export const getProductsByCategoryRequest = async (category) => {
 }
 
 
+export const filterProductsByCategoriesRequest = async (categories) => {
+
+  const params = new URLSearchParams();
+  // Iteramos sobre el arreglo de categorías y agregamos cada categoría a los parámetros de la URL
+  categories.forEach((category) => {
+    params.append("categoryNames", category);
+  });
+
+  try {
+    const response = await fetch(`${API_URL}/products/filter/by/categories?${params.toString()}`, {
+      method: "GET",
+      headers: { "Content-type": "Application/json" },
+    });
+    if (response.ok) {
+      const json = await response.json();
+      const { data } = json;
+
+      // Usar Promise.all para esperar a que todas las promesas dentro de `map` se resuelvan
+      const modifiedProducts = await Promise.all(
+        data.map(async (product) => {
+          const imagesId = getImageIdFromProducts(product); // Obtener los IDs de las imágenes
+
+          // Para obtener todas las imágenes, usamos map sobre `imagesId` y esperamos que todas se resuelvan
+          const images = await Promise.all(
+            imagesId.map(async (id) => {
+              const image = await getImageRequest(id); // Obtener la imagen para cada id
+              return image;
+            })
+          );
+
+          // Mapear las imágenes obtenidas al producto
+          return listProductsMapped(product, images); // Devuelve el producto modificado
+        })
+      );
+
+      return {
+        success: true,
+        data: modifiedProducts,
+        message: "Productos obtenidos con éxito!",
+      };
+    }
+  } catch (error) {
+    console.log("Error de red o de conexión", error);
+    return { message: "Error de red o de conexión" };
+  }
+};
+
+
 export const getProductsByNameRequest = async (name) => {
   try {
     const response = await fetch(`${API_URL}/products/${name}/products`, {

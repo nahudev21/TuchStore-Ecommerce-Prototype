@@ -14,7 +14,7 @@ const categoriesHeader = [
   {
     id: 3,
     value: "AirPods",
-    category: "AirPods",
+    category: "Auriculares",
     path: "https://http2.mlstatic.com/D_NQ_NP_741643-MLA75309123688_032024-O.webp",
   },
   {
@@ -50,7 +50,7 @@ const categoriesHeader = [
   {
     id: 10,
     value: "AirPods",
-    category: "AirPods",
+    category: "Auriculares",
     path: "https://http2.mlstatic.com/D_NQ_NP_831988-MLU78048657190_082024-O.webp",
   },
   {
