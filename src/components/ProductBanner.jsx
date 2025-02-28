@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import image1_banner from "../assets/Banner2_home.png";
-import image2_banner from "../assets/image2_banner.webp";
+import oferta_banner1 from "../assets/oferta_banner1.png";
+import banner2 from "../assets/banner2.png";
 import { FaAngleLeft } from "react-icons/fa6";
 import { FaAngleRight } from "react-icons/fa6";
 
@@ -9,8 +9,8 @@ export default function ProductBanner() {
   const [ currentImage, setCurrentImage ] = useState(0)
 
   const desktopImages = [
-    image1_banner,
-    image2_banner,
+    oferta_banner1,
+    banner2,
   ];
 
   const movileImages = [];
@@ -39,14 +39,14 @@ export default function ProductBanner() {
       } else {
         setCurrentImage(0);
       }
-    }, 4000)
+    }, 5000)
 
     return () => clearInterval(interval);
 
   }, [currentImage])
    
   return (
-    <div className="container mx-auto px-4 rounded ">
+    <div className="container mx-auto px-4 rounded mt-2">
       <div className="w-full h-60 md:h-72 relative bg-slate-200">
         <div className="absolute z-10 h-full w-full md:flex items-center hidden">
           <div className="flex justify-between w-full text-2xl">
@@ -60,7 +60,7 @@ export default function ProductBanner() {
         </div>
         
         {/** Versión desktop y tablet */}
-        <div className="flex h-full w-full overflow-hidden bg-black">
+        <div className="flex h-full w-full overflow-hidden">
           {desktopImages.map((imageUrl, index) => {
             return (
               <div
