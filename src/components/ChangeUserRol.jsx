@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Role from "../common/Rol";
 import { IoMdClose } from "react-icons/io";
-import { updateUserRoleRequest } from "../api/user";
+import { updateUserRequest} from "../api/user";
 import { toast } from "react-toastify";
 
-export default function ChangeUserRol({ firstName, email, roles, onClose, callFunc }) {
+export default function ChangeUserRol({ id, firstName, lastName, email, password, roles, onClose, callFunc }) {
 
   const [ userRoles, setUserRoles ] = useState(roles)
 
@@ -23,15 +23,23 @@ export default function ChangeUserRol({ firstName, email, roles, onClose, callFu
   }
 
   const handleClick = async () => {
-    for (const role of userRoles) {
-      const res = await updateUserRoleRequest(role.id, role.name);
-
-      if (res.success) {
-        toast.success(res.message);
-        onClose();
-        callFunc();
-      }
+    
+    const userUpdated = {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password,
+      roles: userRoles
     }
+
+    const res = await updateUserRequest(id, userUpdated);
+
+    if (res.success) {
+      toast.success(res.message);
+      onClose();
+      callFunc();
+    }
+    
   };
 
   return (
