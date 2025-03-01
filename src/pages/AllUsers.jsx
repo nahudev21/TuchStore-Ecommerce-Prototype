@@ -13,8 +13,11 @@ export default function AllUsers() {
   const [ openUpdateRoleModal, setOpenUpdateRoleModal ] = useState(false);
 
   const [updateUserDetails, setUpdateUserDetails] = useState({
+    id: "",
     email: "",
     firstName: "",
+    lastName: "",
+    password: "",
     roles: [],
   });
 
@@ -87,8 +90,11 @@ export default function AllUsers() {
       {openUpdateRoleModal && (
         <ChangeUserRol
           onClose={() => setOpenUpdateRoleModal(false)}
+          id={updateUserDetails.id}
           email={updateUserDetails.email}
           firstName={updateUserDetails.firstName}
+          lastName={updateUserDetails.lastName}
+          password={updateUserDetails.password}
           roles={updateUserDetails.roles}
           callFunc={getUsers}
         />
