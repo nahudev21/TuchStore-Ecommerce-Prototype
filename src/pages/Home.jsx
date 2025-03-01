@@ -10,6 +10,7 @@ export default function Home() {
       <ProductBanner />
       <HorizontalproductsHome category="Auriculares" heading="AirPods Top" />
       <HorizontalproductsHome category="Cargadores" heading="Cargadores de todas las marcas" />
+      <HorizontalproductsHome category="Fundas" heading="Fundas tanto originales como genéricas" />
       <VerticalproductsHome category="Celulares" heading="Todos los dispositivos" />
     </div>
   );

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import oferta_banner1 from "../assets/oferta_banner1.png";
 import banner2 from "../assets/banner2.png";
+import banner3 from "../assets/banner3.png";
 import { FaAngleLeft } from "react-icons/fa6";
 import { FaAngleRight } from "react-icons/fa6";
 
@@ -11,6 +12,7 @@ export default function ProductBanner() {
   const desktopImages = [
     oferta_banner1,
     banner2,
+    banner3,
   ];
 
   const movileImages = [];
